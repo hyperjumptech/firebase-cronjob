@@ -9,6 +9,10 @@
       ".git/**",
       "**/.*",
       "**/node_modules/**"
-    ]
+    ],
+    "rewrites": [{
+      "source" : "/ping",
+      "function": "ping"
+    }]
   }
 }
