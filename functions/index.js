@@ -19,3 +19,31 @@ exports.showJobCounter = functions.https.onRequest(async (request, response) => 
         response.send(`EXCEPTION: ${err.toString()}`);
     }
 });
+
+async function incrementJobCounter() {
+    let counter = 0;
+    const doc = await db.collection('jobConfig').doc('counter').get();
+    if (doc.data()) {
+        counter = doc.data().value;
+        ++counter;
+    } else {
+        console.log('Counter does not exist yet.');
+    }
+    const data = {
+        value: counter,
+        timestamp: Date.now(),
+    };
+    await db.collection('jobConfig').doc('counter').set(data);
+    console.log(`Increment counter to ${counter}`);
+    return counter;
+}
+
+exports.incrementJobCounter = functions.https.onRequest(async (request, response) => {
+    try {
+        const counter = await incrementJobCounter();
+        response.send(`Counter is now ${counter}`);
+    } catch (err) {
+        console.error(`Failed to increment the counter: ${err.toString()}`);
+        response.send(`EXCEPTION: ${err.toString()}`);
+    }
+});

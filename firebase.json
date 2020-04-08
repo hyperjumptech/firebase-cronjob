@@ -18,6 +18,10 @@
       {
         "source": "/showJobCounter",
         "function": "showJobCounter"
+      },
+      {
+        "source": "/incrementJobCounter",
+        "function": "incrementJobCounter"
       }
     ]
   },
