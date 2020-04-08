@@ -4,6 +4,8 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+fire*.log
+pubsub*.log
 
 # Runtime data
 pids
