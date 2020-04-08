@@ -4,7 +4,9 @@
   "description": "Cronjob for Firebase",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run check-format",
+    "check-format": "prettier --check \"**/*.js\"",
+    "format-code": "prettier --write \"**/*.js\"",
     "firebase": "firebase"
   },
   "author": "Ariya Hidayat",
@@ -18,5 +20,10 @@
   "devDependencies": {
     "firebase-functions-test": "^0.2.0",
     "prettier": "^2.0.4"
+  },
+  "prettier": {
+    "tabWidth": 4,
+    "printWidth": 120,
+    "singleQuote": true
   }
 }
