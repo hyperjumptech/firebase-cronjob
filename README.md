@@ -22,15 +22,11 @@ To quickly check that it is working, trigger the `ping` cloud function, e.g. by 
 
 ### Local Testing
 
-Launch Firebase Emulators first (and keep it running):
+Run the integration tests (which uses Firebase emulators):
 ```
-npm run firebase -- emulators:start
+npm run firebase -- emulators:exec "npm test" --project YOURFIREBASEPROJECT
 ```
-
-Run the integration tests:
-```
-npm run test
-```
+where `YOURFIREBASEPROJECT` is the name of the Firebase project.
 
 ### Deployment from Azure Pipelines
 
