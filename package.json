@@ -4,7 +4,8 @@
   "description": "Cronjob for Firebase",
   "main": "index.js",
   "scripts": {
-    "test": "npm run check-format",
+    "test": "npm run integration-tests && npm run check-format",
+    "integration-tests": "mocha tests/",
     "check-format": "prettier --check \"**/*.js\"",
     "format-code": "prettier --write \"**/*.js\"",
     "firebase": "firebase"
@@ -18,6 +19,7 @@
     "firebase-tools": "^8.0.2"
   },
   "devDependencies": {
+    "axios": "^0.19.2",
     "firebase-functions-test": "^0.2.0",
     "mocha": "^7.1.1",
     "prettier": "^2.0.4"
