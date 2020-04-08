@@ -26,3 +26,14 @@ describe('firebase-cronjobs', function () {
         assert.equal(res.data, 'Counter is 0');
     });
 });
+
+describe('firebase-cronjobs', function () {
+    this.timeout(6000);
+    it('should schedule periodic job counter increment', async function () {
+        let res = await axios.get('http://localhost:5000/triggerScheduledIncrementJobCounter');
+        assert.equal(res.data, 'triggered');
+        await new Promise((r) => setTimeout(r, 2000));
+        res = await axios.get('http://localhost:5000/showJobCounter');
+        assert.equal(res.data, 'Counter is 1');
+    });
+});

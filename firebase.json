@@ -22,6 +22,10 @@
       {
         "source": "/incrementJobCounter",
         "function": "incrementJobCounter"
+      },
+      {
+        "source": "/triggerScheduledIncrementJobCounter",
+        "function": "triggerScheduledIncrementJobCounter"
       }
     ]
   },
