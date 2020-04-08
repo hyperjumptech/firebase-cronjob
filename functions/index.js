@@ -47,3 +47,7 @@ exports.incrementJobCounter = functions.https.onRequest(async (request, response
         response.send(`EXCEPTION: ${err.toString()}`);
     }
 });
+
+const JOB_PERIOD = 1; // minute
+
+exports.autoIncrementJobCounter = functions.pubsub.schedule(`every ${JOB_PERIOD} minutes`).onRun(incrementJobCounter);

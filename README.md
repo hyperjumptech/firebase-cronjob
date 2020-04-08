@@ -10,6 +10,8 @@ After repository clone, run `npm install`.
 
 Create a new project from [Firebase Console](https://console.firebase.google.com).
 
+From Firebase Console, _Update_ the project from Spark to Blaze (this requires payment information) as this is necessary to make scheduled Cloud Function working properly.
+
 Go to _Project Overview_ and then click on the `</>` icon. Enter the nickname under _Register app_. Make sure to check the box _Also set up Firebase Hosting_.
 
 From Firebase Console, go to _Database_ and proceed to setup the Firestore database. Use the _Production_ security rules right away.
