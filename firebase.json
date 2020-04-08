@@ -1,0 +1,14 @@
+{
+  "hosting": {
+    "public": "./",
+    "ignore": [
+      "README.md",
+      "firebase.json",
+      "package.json",
+      "package-lock.json",
+      ".git/**",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
