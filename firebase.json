@@ -10,17 +10,33 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [{
-      "source" : "/ping",
-      "function": "ping"
-    }]
+    "rewrites": [
+      {
+        "source": "/ping",
+        "function": "ping"
+      },
+      {
+        "source": "/showJobCounter",
+        "function": "showJobCounter"
+      }
+    ]
   },
   "emulators": {
     "functions": {
       "port": 5001
     },
+    "firestore": {
+      "port": 8080
+    },
     "hosting": {
       "port": 5000
+    },
+    "pubsub": {
+      "port": 8085
     }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
   }
 }
