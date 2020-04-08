@@ -14,3 +14,7 @@ jobs:
 
   - script: npm test
     displayName: 'npm test'
+
+  - script: npm run firebase -- deploy --project "$FIREBASE_PROJECT" --token "$FIREBASE_TOKEN"
+    displayName: 'Deploy to Firebase'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
