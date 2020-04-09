@@ -48,3 +48,16 @@ describe('firebase-cronjobs', function () {
         assert.equal(res.data, 'added: {"period":"10","task":"DoNothing"}');
     });
 });
+
+describe('firebase-cronjobs', function () {
+    this.timeout(6000);
+    it('should queue a job', async function () {
+        axios.get('http://localhost:5000/addJobConfig?period=2&task=DoNothing');
+        axios.get('http://localhost:5000/incrementJobCounter');
+        await new Promise((r) => setTimeout(r, 500));
+        axios.get('http://localhost:5000/incrementJobCounter');
+        await new Promise((r) => setTimeout(r, 500));
+        const res = await axios.get('http://localhost:5000/showQueueLength');
+        assert.equal(res.data, 'Queue length is 1');
+    });
+});

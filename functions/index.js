@@ -72,6 +72,36 @@ exports.addJobConfig = functions.https.onRequest(async (request, response) => {
     }
 });
 
+exports.generateQueues = functions.firestore.document('jobConfig/counter').onUpdate(async (change, context) => {
+    try {
+        const counter = (await change.after.ref.get()).data().value;
+        console.log(`Job counter is ${counter}`);
+        const docIds = [];
+        const allJobs = await db.collection('jobConfig').get();
+        allJobs.forEach((doc) => {
+            if (doc.id !== 'counter') docIds.push(doc.id);
+        });
+        await Promise.all(
+            docIds.map(async (id) => {
+                const doc = await db.collection('jobConfig').doc(id).get();
+                const job = doc.data();
+                const period = job.period;
+                if (counter % job.period === 0) {
+                    console.log(`Queueing ${job.task} (${period} mins)`);
+                    const queue = {
+                        jobId: doc.id,
+                        timestamp: Date.now(),
+                        index: counter / job.period,
+                    };
+                    return db.collection('jobQueues').add(queue);
+                }
+            })
+        );
+    } catch (err) {
+        console.error(`Failed to generate new queue: ${err.toString()}`);
+    }
+});
+
 // ----- for running in the emulators only
 
 const { PubSub } = require('@google-cloud/pubsub');
@@ -101,6 +131,21 @@ exports.triggerScheduledIncrementJobCounter = functions.https.onRequest(async (r
     if (inEmulators) {
         await triggerScheduledIncrementJobCounter();
         response.send('triggered');
+    } else {
+        response.send('ERROR: usable only in emulators');
+    }
+});
+
+exports.showQueueLength = functions.https.onRequest(async (request, response) => {
+    if (inEmulators) {
+        const allQueues = await db.collection('jobQueues').get();
+        let totalQueues = 0;
+        allQueues.forEach((queue) => {
+            console.log(`Queue ${totalQueues}: ${queue.id}`);
+            ++totalQueues;
+        });
+        console.log(`Queue length is ${totalQueues}`);
+        response.send(`Queue length is ${totalQueues}`);
     } else {
         response.send('ERROR: usable only in emulators');
     }

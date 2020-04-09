@@ -30,6 +30,10 @@
       {
         "source": "/addJobConfig",
         "function": "addJobConfig"
+      },
+      {
+        "source": "/showQueueLength",
+        "function": "showQueueLength"
       }
     ]
   },
