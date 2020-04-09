@@ -1,6 +1,8 @@
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 
+const task = require('./task');
+
 exports.ping = functions.https.onRequest((request, response) => {
     response.send(`OK ${Date.now()}`);
 });
@@ -99,6 +101,37 @@ exports.generateQueues = functions.firestore.document('jobConfig/counter').onUpd
         );
     } catch (err) {
         console.error(`Failed to generate new queue: ${err.toString()}`);
+    }
+});
+
+exports.runJob = functions.firestore.document('jobQueues/{id}').onCreate(async (snap, context) => {
+    try {
+        const queue = snap.data();
+        const doc = await db.collection('jobConfig').doc(queue.jobId).get();
+        const config = doc.data();
+        config.timeout = config.timeout || 5 * 60;
+        let result;
+        const now = Date.now();
+        switch (config.task) {
+            case 'ConvertCase':
+                result = await task.convertCase(config.input);
+                break;
+            default:
+                throw new Error(`Unknown task ${config.task}`);
+        }
+        const elapsed = Date.now() - now;
+        const run = {
+            jobId: queue.jobId,
+            index: queue.index,
+            timestamp: Date.now(),
+            elapsed: elapsed,
+            result: result,
+        };
+        console.log(`new run: ${JSON.stringify(run)}`);
+        await db.collection('jobRuns').add(run);
+        db.collection('jobQueues').doc(context.params.id).delete();
+    } catch (err) {
+        console.error(`Failed to run job: ${err.toString()}`);
     }
 });
 
