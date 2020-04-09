@@ -37,3 +37,14 @@ describe('firebase-cronjobs', function () {
         assert.equal(res.data, 'Counter is 1');
     });
 });
+
+describe('firebase-cronjobs', function () {
+    it('should have a working addJobConfig function for a sample job config', async function () {
+        const res = await axios.get('http://localhost:5000/addJobConfig');
+        assert.equal(res.data, 'added: {"task":"ConvertCase","period":30,"input":"Hello, world!"}');
+    });
+    it('should have a working addJobConfig function for a custom job config', async function () {
+        const res = await axios.get('http://localhost:5000/addJobConfig?period=10&task=DoNothing');
+        assert.equal(res.data, 'added: {"period":"10","task":"DoNothing"}');
+    });
+});

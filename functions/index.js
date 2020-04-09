@@ -52,6 +52,26 @@ const JOB_PERIOD = 1; // minute
 
 exports.autoIncrementJobCounter = functions.pubsub.schedule(`every ${JOB_PERIOD} minutes`).onRun(incrementJobCounter);
 
+exports.addJobConfig = functions.https.onRequest(async (request, response) => {
+    try {
+        let config = request.query;
+        if (!config || Object.keys(config).length === 0) {
+            console.log('Adding a sample job config...');
+            config = {
+                task: 'ConvertCase',
+                period: 30,
+                input: 'Hello, world!',
+            };
+        }
+        await db.collection('jobConfig').add(config);
+        console.log(`added: ${JSON.stringify(config)}`);
+        response.send(`added: ${JSON.stringify(config)}`);
+    } catch (err) {
+        console.error(`Failed to add example job: ${err.toString()}`);
+        response.send(`EXCEPTION: ${err.toString()}`);
+    }
+});
+
 // ----- for running in the emulators only
 
 const { PubSub } = require('@google-cloud/pubsub');

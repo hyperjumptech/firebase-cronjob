@@ -26,6 +26,10 @@
       {
         "source": "/triggerScheduledIncrementJobCounter",
         "function": "triggerScheduledIncrementJobCounter"
+      },
+      {
+        "source": "/addJobConfig",
+        "function": "addJobConfig"
       }
     ]
   },
