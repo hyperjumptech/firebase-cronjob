@@ -110,15 +110,8 @@ exports.runJob = functions.firestore.document('jobQueues/{id}').onCreate(async (
         const doc = await db.collection('jobConfig').doc(queue.jobId).get();
         const config = doc.data();
         config.timeout = config.timeout || 5 * 60;
-        let result;
         const now = Date.now();
-        switch (config.task) {
-            case 'ConvertCase':
-                result = await task.convertCase(config.input);
-                break;
-            default:
-                throw new Error(`Unknown task ${config.task}`);
-        }
+        const result = await task.execute(config.task, config.input);
         const elapsed = Date.now() - now;
         const run = {
             jobId: queue.jobId,
