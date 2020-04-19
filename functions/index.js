@@ -24,18 +24,22 @@ exports.showJobCounter = functions.https.onRequest(async (request, response) => 
 
 async function incrementJobCounter() {
     let counter = 0;
-    const doc = await db.collection('jobConfig').doc('counter').get();
+    const docRef = db.collection('jobConfig').doc('counter');
+    const doc = await docRef.get();
     if (doc.data()) {
         counter = doc.data().value;
         ++counter;
+        await docRef.update({
+            value: admin.firestore.FieldValue.increment(1),
+            timestamp: Date.now(),
+        });
     } else {
         console.log('Counter does not exist yet.');
+        await docRef.set({
+            value: 0,
+            timestamp: Date.now(),
+        });
     }
-    const data = {
-        value: counter,
-        timestamp: Date.now(),
-    };
-    await db.collection('jobConfig').doc('counter').set(data);
     console.log(`Increment counter to ${counter}`);
     return counter;
 }
