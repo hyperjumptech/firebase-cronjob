@@ -1,5 +1,8 @@
 # Cronjob for Firebase
 
+![Continous Integration](https://github.com/hyperjumptech/firebase-cronjob/workflows/Continous%20Integration/badge.svg)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 ## Principle of Operation
 
 Using the [Scheduled functions feature](https://firebase.google.com/docs/functions/schedule-functions), the function `autoIncrementJobCounter` gets executed _once every minute_. This function does a very simple thing, i.e. it increments the value of `jobConfig/counter` in the Firestore database.
