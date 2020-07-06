@@ -16,7 +16,7 @@ With same trigger on the `jobQueues` collection, each new queue will invoke the 
 Each job run will have the following properties:
 * `jobId`: the unique string associated with the job config
 * `timestamp`: the starting time right before the execution (Unix epoch)
-* `elasped`: the duration of the task execution (in milliseconds)
+* `elapsed`: the duration of the task execution (in milliseconds)
 * `result`: the output of executing the task
 
 ## Setup
